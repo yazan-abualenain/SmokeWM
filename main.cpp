@@ -1,5 +1,5 @@
 #include <iostream>
-#include <Louvre/LCompositor.h>
+#include <LCompositor.h>
 
 
 
