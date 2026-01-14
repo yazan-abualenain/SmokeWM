@@ -2,7 +2,6 @@
 #include <LCompositor.h>
 #include <LSeat.h>
 #include <LKeyboard.h>
-#include <LOutput.h>
 
 
 #include <linux/input-event-codes.h> 
@@ -12,7 +11,10 @@
 
 #include "main.h"
 
+
 #define KP( x ) keyboard->isKeyCodePressed( x )
+
+
 
 using namespace Louvre;
 
@@ -24,8 +26,6 @@ int main() {
 
     LCompositor* compositor = new LCompositor();
 
-
-    
     if (!compositor->start()) {
         std::cerr << "Failed to start." << std::endl;
         delete compositor;
@@ -35,8 +35,6 @@ int main() {
     LSeat* seat = compositor->seat();
     LKeyboard* keyboard = seat->keyboard();
     
-    auto outputList=setupOutputs(compositor);
-
 
     while (compositor->state()==2) {
         compositor->processLoop(-1);
@@ -44,15 +42,8 @@ int main() {
             std::cout << "ESC pressed, exiting..." << std::endl;
             break;
         }
-
-        for (const auto& output : outputList) {
-            output->paintGL();
         }
-        for (const auto& client : compositor->clients()) {
-            std::cout << "Client: " << client << std::endl;
-        }
-    }
-
+    
     compositor->finish();
     
     std::cout << "Compositor finished cleanly." << std::endl;
@@ -60,4 +51,3 @@ int main() {
 
     _Exit(0);
 }
-
